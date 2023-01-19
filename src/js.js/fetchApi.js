@@ -9,7 +9,7 @@ const params = new URLSearchParams({
   safesearch: true,
 });
 
-export async function fetchApi(search, page = 1, perPage = 40) {
+export async function fetchApi(search, page = 1, perPage = 10) {
   return await axios.get(
     `${BASEURL}?q=${search}&page=${page}&per_page=${perPage}`,
     {

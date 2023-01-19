@@ -27,6 +27,7 @@ body {
 }
 .search-input {
   height: 30px;
+  min-width: 100px;
   padding: 10px;
   border-radius: 14px;
   border: 1.5px solid #fff;
@@ -113,4 +114,10 @@ body {
   height: 150px;
   object-fit: cover;
   border-radius: 6px 6px 0 0;
+}
+.pagination {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
 }
