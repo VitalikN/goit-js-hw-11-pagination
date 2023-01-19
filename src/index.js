@@ -5,28 +5,15 @@ import { fetchApi } from './js.js/fetchApi';
 
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
-// const btnLoadMore = document.querySelector('.load-more');
-// const guard = document.querySelector('.js-guard');
-// const checkbox = document.querySelector('.js-checkbox');
+
 const paginationList = document.querySelector('.pagination');
 let globalCurrentPage = 0;
 let pages = 1;
 let page = 1;
-let perPage = 20;
+let perPage = 5;
 let inputForm = '';
-// let infiniteScroll;
-
-// let options = {
-//   root: null,
-//   rootMargin: '300px',
-//   threshold: 1.0,
-// };
-
-// let observer = new IntersectionObserver(onInfiniteScroll, options);
 
 searchForm.addEventListener('submit', onSearchForm);
-// btnLoadMore.addEventListener('click', onLoadMarkupGallery);
-// checkbox.addEventListener('change', setInfiniteScroll);
 
 async function onSearchForm(evt) {
   evt.preventDefault();
@@ -35,21 +22,11 @@ async function onSearchForm(evt) {
   if (inputForm !== newInputForm) {
     inputForm = newInputForm;
     pages = 1;
-    onCleanGallery();
-    // observer.unobserve(guard);
   }
   if (inputForm && pages >= page) {
-    // infiniteScroll ? observer.observe(guard) :
     await onLoadMarkupGallery();
-
     simpleLightbox.refresh();
   }
-}
-
-function onCleanGallery() {
-  gallery.innerHTML = '';
-  // btnLoadMore.classList.add('hidden');
-  page = 1;
 }
 
 function markupGallery(res) {
@@ -81,8 +58,8 @@ function markupGallery(res) {
     ''
   );
 
-  // gallery.insertAdjacentHTML('beforeend', markup);
-  gallery.innerHTML = markup;
+  gallery.insertAdjacentHTML('beforeend', markup);
+  // gallery.innerHTML = markup;
 }
 
 function onMessenge(searchMessenge, page, pages) {
@@ -101,16 +78,8 @@ function onMessenge(searchMessenge, page, pages) {
 
 async function onLoadMarkupGallery() {
   const res = await onGetData();
-  // btnLoadMore.classList.add('hidden');
   markupGallery(res);
   simpleLightbox.refresh();
-
-  // if (pages > page && !infiniteScroll) scroll(gallery);
-
-  // if (pages > page && !infiniteScroll) {
-  //   btnLoadMore.classList.remove('hidden');
-  // }
-  // page += 1;
 }
 
 async function onGetData() {
@@ -126,27 +95,6 @@ async function onGetData() {
   }
 }
 
-// function onInfiniteScroll(entries, observer) {
-//   entries.forEach(async entrie => {
-//     if (entrie.isIntersecting && inputForm) {
-//       const res = await onGetData();
-//       markupGallery(res);
-//       simpleLightbox.refresh();
-//       page += 1;
-//       if (pages < page) {
-//         observer.unobserve(guard);
-//       }
-//     }
-//   });
-// }
-
-// function setInfiniteScroll(evt) {
-//   infiniteScroll = evt.currentTarget.checked;
-
-//   !infiniteScroll ? observer.unobserve(guard) : observer.observe(guard);
-//   if (pages > 1 && infiniteScroll) btnLoadMore.classList.add('hidden');
-// }
-
 function pagination(currentPage, allPages) {
   let markupPagination = '';
   let beforTwoPage = currentPage - 2;
@@ -156,34 +104,33 @@ function pagination(currentPage, allPages) {
   globalCurrentPage = currentPage;
 
   if (currentPage > 1) {
-    markupPagination += `<li> &#129144; </li>`;
-    markupPagination += `<li> 1 </li>`;
+    markupPagination += `<li>&#129144;</li>`;
+    markupPagination += `<li>1</li>`;
   }
   if (currentPage > 4) {
-    markupPagination += `<li> ... </li>`;
+    markupPagination += `<li>...</li>`;
   }
   if (currentPage > 3) {
-    markupPagination += `<li> ${beforTwoPage} </li>`;
+    markupPagination += `<li>${beforTwoPage}</li>`;
   }
   if (currentPage > 2) {
-    markupPagination += `<li> ${beforPage} </li>`;
+    markupPagination += `<li>${beforPage}</li>`;
   }
 
-  // переглянути навіщо <b>
-  markupPagination += `<li> <b>${currentPage}</b> </li>`;
+  markupPagination += `<li><b>${currentPage}</b></li>`;
 
   if (allPages - 1 > currentPage) {
-    markupPagination += `<li> ${afterPage} </li>`;
+    markupPagination += `<li>${afterPage}</li>`;
   }
   if (allPages - 2 > currentPage) {
-    markupPagination += `<li> ${afterTwoPage} </li>`;
+    markupPagination += `<li>${afterTwoPage}</li>`;
   }
   if (allPages - 3 > currentPage) {
-    markupPagination += `<li> ... </li>`;
+    markupPagination += `<li>...</li>`;
   }
   if (allPages > currentPage) {
-    markupPagination += `<li> ${allPages} </li>`;
-    markupPagination += `<li> &#129146; </li>`;
+    markupPagination += `<li>${allPages}</li>`;
+    markupPagination += `<li>&#129146;</li>`;
   }
   paginationList.innerHTML = markupPagination;
 }
@@ -198,7 +145,7 @@ async function onPaginationList(evt) {
     return;
   }
   if (evt.target.textContent === '🡸') {
-    const res = await onGetData();
+    // const res = await onGetData();
     if ((globalCurrentPage -= 1)) {
       markupGallery(res);
       simpleLightbox.refresh();
@@ -207,18 +154,20 @@ async function onPaginationList(evt) {
     return;
   }
   if (evt.target.textContent === '🡺') {
-    const res = await onGetData();
+    // const res = await onGetData();
     if ((globalCurrentPage += 1)) {
       markupGallery(res);
       simpleLightbox.refresh();
       pagination(page, pages);
+      console.log('215 ');
     }
     return;
   }
   const pagep = evt.target.textContent;
-
-  const res = await onGetData();
+  console.log('219 ');
+  // const res = await onGetData();
   markupGallery(res);
   simpleLightbox.refresh();
   pagination(page, pages);
+  console.log('224');
 }
