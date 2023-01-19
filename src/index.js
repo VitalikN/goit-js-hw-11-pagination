@@ -138,6 +138,7 @@ function pagination(currentPage, allPages) {
 paginationList.addEventListener('click', onPaginationList);
 
 async function onPaginationList(evt) {
+  const res = await onGetData();
   if (evt.target.nodeName !== 'LI') {
     return;
   }
@@ -145,8 +146,8 @@ async function onPaginationList(evt) {
     return;
   }
   if (evt.target.textContent === '🡸') {
-    // const res = await onGetData();
     if ((globalCurrentPage -= 1)) {
+      globalCurrentPage -= 1;
       markupGallery(res);
       simpleLightbox.refresh();
       pagination(page, pages);
@@ -154,20 +155,19 @@ async function onPaginationList(evt) {
     return;
   }
   if (evt.target.textContent === '🡺') {
-    // const res = await onGetData();
     if ((globalCurrentPage += 1)) {
       markupGallery(res);
       simpleLightbox.refresh();
       pagination(page, pages);
-      console.log('215 ');
+      console.log('162 ', evt.target.textContent);
+      globalCurrentPage += 1;
     }
     return;
   }
   const pagep = evt.target.textContent;
-  console.log('219 ');
-  // const res = await onGetData();
+
   markupGallery(res);
   simpleLightbox.refresh();
   pagination(page, pages);
-  console.log('224');
+  console.log('172', pagep);
 }
