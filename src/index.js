@@ -10,7 +10,7 @@ const paginationList = document.querySelector('.pagination');
 let globalCurrentPage = 0;
 let pages = 1;
 let page = 1;
-let perPage = 5;
+let perPage = 4;
 let inputForm = '';
 
 searchForm.addEventListener('submit', onSearchForm);
@@ -58,8 +58,8 @@ function markupGallery(res) {
     ''
   );
 
-  gallery.insertAdjacentHTML('beforeend', markup);
-  // gallery.innerHTML = markup;
+  // gallery.insertAdjacentHTML('beforeend', markup);
+  gallery.innerHTML = markup;
 }
 
 function onMessenge(searchMessenge, page, pages) {
@@ -79,14 +79,17 @@ function onMessenge(searchMessenge, page, pages) {
 async function onLoadMarkupGallery() {
   const res = await onGetData();
   markupGallery(res);
+
   simpleLightbox.refresh();
 }
 
 async function onGetData() {
   try {
     const res = await fetchApi(inputForm, page, perPage);
+
     pages = Math.ceil(res.data.total / perPage);
     const searchMessenge = res.data;
+
     onMessenge(searchMessenge, page, pages);
     pagination(page, pages);
     return searchMessenge.hits;
@@ -138,7 +141,6 @@ function pagination(currentPage, allPages) {
 paginationList.addEventListener('click', onPaginationList);
 
 async function onPaginationList(evt) {
-  const res = await onGetData();
   if (evt.target.nodeName !== 'LI') {
     return;
   }
@@ -146,28 +148,26 @@ async function onPaginationList(evt) {
     return;
   }
   if (evt.target.textContent === '🡸') {
-    if ((globalCurrentPage -= 1)) {
-      globalCurrentPage -= 1;
-      markupGallery(res);
+    onGetData((globalCurrentPage -= 1)).then(data => {
+      markupGallery(data);
       simpleLightbox.refresh();
       pagination(page, pages);
-    }
+    });
     return;
   }
   if (evt.target.textContent === '🡺') {
-    if ((globalCurrentPage += 1)) {
-      markupGallery(res);
+    onGetData((globalCurrentPage += 1)).then(data => {
+      markupGallery(data);
       simpleLightbox.refresh();
       pagination(page, pages);
-      console.log('162 ', evt.target.textContent);
-      globalCurrentPage += 1;
-    }
+    });
     return;
   }
   const pagep = evt.target.textContent;
-
-  markupGallery(res);
-  simpleLightbox.refresh();
-  pagination(page, pages);
-  console.log('172', pagep);
+  onGetData(pagep).then(data => {
+    markupGallery(data);
+    simpleLightbox.refresh();
+    console.log('170 №', pagep);
+    pagination(page, pages);
+  });
 }
